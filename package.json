@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "push": "npx clasp push",
+    "build": "tsc",
+    "push": "npm run build && npx clasp push",
     "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
     "deploy": "npx clasp deploy --description \"DEPLOY_$(date +%Y%m%d-%H%M%S)\"",
     "release": "npm run push && npm run deploy"
@@ -12,6 +13,8 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@google/clasp": "^3.0.6-alpha"
+    "@google/clasp": "^3.0.6-alpha",
+    "@types/google-apps-script": "^1.0.99",
+    "typescript": "^5.8.3"
   }
 }
