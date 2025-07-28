@@ -1,0 +1,17 @@
+{
+  "name": "roster-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "push": "npx clasp push",
+    "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
+    "deploy": "npx clasp deploy --description \"DEPLOY_$(date +%Y%m%d-%H%M%S)\"",
+    "release": "npm run push && npm run deploy"
+  },
+  "author": "otiai10",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@google/clasp": "^3.0.6-alpha"
+  }
+}
