@@ -10,16 +10,16 @@ function getExistingDeploymentId(): string | null {
     return process.env.CLASP_DEPLOYMENT_ID.trim();
   }
   
-  // Check .deploymentid file
-  const deploymentIdFile = join(process.cwd(), '.deploymentid');
-  if (existsSync(deploymentIdFile)) {
+  // Check .deployment.json file
+  const deploymentFile = join(process.cwd(), '.deployment.json');
+  if (existsSync(deploymentFile)) {
     try {
-      const deploymentId = readFileSync(deploymentIdFile, 'utf8').trim();
-      if (deploymentId) {
-        return deploymentId;
+      const deploymentData = JSON.parse(readFileSync(deploymentFile, 'utf8'));
+      if (deploymentData.id) {
+        return deploymentData.id.trim();
       }
     } catch (error) {
-      console.warn('Failed to read .deploymentid file:', (error as Error).message);
+      console.warn('Failed to read .deployment.json file:', (error as Error).message);
     }
   }
   
