@@ -4,6 +4,7 @@ function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events
   const output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
   output.setContent(JSON.stringify({
+    message: "hello",
     query: ev.parameter,
   }));
   return output;
