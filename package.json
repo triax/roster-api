@@ -8,15 +8,19 @@
     "push": "npm run build && npx clasp push",
     "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
     "deploy": "npx tsx scripts/deploy.ts",
-    "release": "npm run push && npm run deploy"
+    "release": "npm run push && npm run deploy",
+    "test:local": "npx tsx scripts/localTestServer.ts"
   },
   "author": "otiai10",
   "license": "MIT",
   "description": "",
   "devDependencies": {
     "@google/clasp": "^3.0.6-alpha",
+    "@types/express": "^5.0.3",
     "@types/google-apps-script": "^1.0.99",
     "@types/node": "^24.1.0",
+    "csv-parse": "^6.1.0",
+    "express": "^5.1.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
