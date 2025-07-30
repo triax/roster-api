@@ -35,7 +35,7 @@ interface APIResponse {
 }
 
 // Utility function to convert Google Drive sharing URLs to direct image URLs
-function convertDriveUrlToDirectImageUrl(driveUrl: string): string {
+function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean = false): string {
   if (!driveUrl) return '';
   
   // Match various Google Drive URL patterns
@@ -48,7 +48,11 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string): string {
   for (const pattern of patterns) {
     const match = driveUrl.match(pattern);
     if (match && match[1]) {
-      return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      if (useThumbnail) {
+        return `https://drive.google.com/thumbnail?id=${match[1]}`;
+      } else {
+        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
     }
   }
   
@@ -90,7 +94,7 @@ function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events
 }
 
 // Fetch all data from the spreadsheet
-function fetchRosterData(): Member[] {
+function fetchRosterData(useThumbnails: boolean = false): Member[] {
   const sheet = SpreadsheetApp.getActiveSheet();
   const data = sheet.getDataRange().getValues();
   
@@ -121,8 +125,8 @@ function fetchRosterData(): Member[] {
       next_introduction: row[9] || undefined,
       role: row[10] || '',
       photos: {
-        serious: convertDriveUrlToDirectImageUrl(row[11] || ''),
-        casual: row[12] ? row[12].split(',').map((url: string) => convertDriveUrlToDirectImageUrl(url.trim())).filter((url: string) => url) : []
+        serious: convertDriveUrlToDirectImageUrl(row[11] || '', useThumbnails),
+        casual: row[12] ? row[12].split(',').map((url: string) => convertDriveUrlToDirectImageUrl(url.trim(), useThumbnails)).filter((url: string) => url) : []
       },
       workplace: row[13] || '',
       university: row[14] || '',
@@ -140,7 +144,8 @@ function fetchRosterData(): Member[] {
 
 // Handle requests for member data
 function handleMembersRequest(params: any): APIResponse {
-  const members = fetchRosterData();
+  const useThumbnails = params.thumbnails === 'true';
+  const members = fetchRosterData(useThumbnails);
   let filteredMembers = members;
   
   // Filter by position if specified
@@ -190,7 +195,7 @@ function handleMembersRequest(params: any): APIResponse {
 
 // Get list of available positions
 function getAvailablePositions(): APIResponse {
-  const members = fetchRosterData();
+  const members = fetchRosterData(false);
   const positions = new Set(members.map(m => m.position).filter(p => p));
   
   return {
