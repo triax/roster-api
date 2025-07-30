@@ -47,3 +47,10 @@ The app is configured as a web app with the following settings (in `appsscript.j
 - TypeScript must be compiled to JavaScript before pushing (handled by `npm run push`)
 - The script is configured to use the V8 JavaScript runtime and logs to Stackdriver
 - Only edit `.ts` files - `.js` files are auto-generated and should not be edited directly
+
+## Deployment Management
+
+- Google Apps Script deployment IDs always start with the prefix `AKfycb` followed by random alphanumeric characters
+- Each deployment creates a new unique URL endpoint
+- Run `npm run deploy` to create a new deployment
+- The deployment URL will be displayed in the console output after successful deployment
