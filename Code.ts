@@ -1,10 +1,178 @@
+// Type definitions for roster data
+interface Member {
+  timestamp: string;
+  name: {
+    default: string; // Japanese name
+    hiragana: string;
+    alphabet: string;
+  }
+  position: string;
+  jersey?: string;
+  height?: string;
+  weight?: string;
+  birthdate?: string;
+  introduction: string;
+  role: string;
+  photos: {
+    serious: string;
+    casual: string[]; // comma-separated URLs
+  }
+  workplace: string;
+  university: string;
+  enthusiasm: string;
+  watchme: string;
+  hobbies: string;
+  favorite: string;
+  gifts: string;
+  whatILikeAboutTriax: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  data?: any;
+  error?: string;
+  count?: number;
+}
+
+// Main entry point for GET requests
 function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events.DoGet): GoogleAppsScript.Content.TextOutput {
-  const sheet = SpreadsheetApp.getActiveSheet();
   const output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
-  output.setContent(JSON.stringify({
-    message: "hello, hello, hello",
-    query: ev.parameter,
-  }));
+  
+  try {
+    const params = ev.parameter || {};
+    
+    // Route to appropriate handler based on query parameters
+    let response: ApiResponse;
+    
+    if (params.action === 'members' || !params.action) {
+      response = handleMembersRequest(params);
+    } else if (params.action === 'positions') {
+      response = getAvailablePositions();
+    } else {
+      response = {
+        success: false,
+        error: 'Invalid action. Available actions: members, positions'
+      };
+    }
+    
+    output.setContent(JSON.stringify(response));
+  } catch (error) {
+    output.setContent(JSON.stringify({
+      success: false,
+      error: error.toString()
+    }));
+  }
+  
   return output;
+}
+
+// Fetch all data from the spreadsheet
+function fetchRosterData(): Member[] {
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  
+  if (data.length < 2) {
+    throw new Error('No data found in spreadsheet');
+  }
+  
+  // Skip header row and process data
+  const members: Member[] = [];
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    
+    // Skip empty rows
+    if (!row[0] || !row[1]) continue;
+    
+    members.push({
+      timestamp: row[0] ? new Date(row[0]).toISOString() : '',
+      name: {
+        default: row[1] || '',
+        hiragana: row[2] || '',
+        alphabet: row[3] || ''
+      },
+      position: row[4] || '',
+      jersey: row[5] ? row[5].toString() : '',
+      height: row[6] ? row[6].toString() : '',
+      weight: row[7] ? row[7].toString() : '',
+      birthdate: row[8] ? new Date(row[8]).toISOString().split('T')[0] : '',
+      introduction: row[9] || '',
+      role: row[10] || '',
+      photos: {
+        serious: row[11] || '',
+        casual: row[12] ? row[12].split(',').map((url: string) => url.trim()).filter((url: string) => url) : []
+      },
+      workplace: row[13] || '',
+      university: row[14] || '',
+      enthusiasm: row[15] || '',
+      watchme: row[16] || '',
+      hobbies: row[17] || '',
+      favorite: row[18] || '',
+      gifts: row[19] || '',
+      whatILikeAboutTriax: row[20] || ''
+    });
+  }
+  
+  return members;
+}
+
+// Handle requests for member data
+function handleMembersRequest(params: any): ApiResponse {
+  const members = fetchRosterData();
+  let filteredMembers = members;
+  
+  // Filter by position if specified
+  if (params.position) {
+    filteredMembers = members.filter(m => 
+      m.position.toLowerCase() === params.position.toLowerCase()
+    );
+  }
+  
+  // Filter by jersey number if specified
+  if (params.jerseyNumber) {
+    filteredMembers = members.filter(m => 
+      m.jersey === params.jerseyNumber
+    );
+  }
+  
+  // Search by name if specified
+  if (params.name) {
+    const searchTerm = params.name.toLowerCase();
+    filteredMembers = members.filter(m => 
+      m.name.default.toLowerCase().includes(searchTerm) ||
+      m.name.hiragana.toLowerCase().includes(searchTerm) ||
+      m.name.alphabet.toLowerCase().includes(searchTerm)
+    );
+  }
+  
+  // Limit fields if specified
+  if (params.fields) {
+    const fields = params.fields.split(',');
+    filteredMembers = filteredMembers.map(member => {
+      const limitedMember: any = {};
+      fields.forEach((field: string) => {
+        if (field in member) {
+          limitedMember[field] = member[field as keyof Member];
+        }
+      });
+      return limitedMember;
+    });
+  }
+  
+  return {
+    success: true,
+    data: filteredMembers,
+    count: filteredMembers.length
+  };
+}
+
+// Get list of available positions
+function getAvailablePositions(): ApiResponse {
+  const members = fetchRosterData();
+  const positions = new Set(members.map(m => m.position).filter(p => p));
+  
+  return {
+    success: true,
+    data: Array.from(positions).sort()
+  };
 }
