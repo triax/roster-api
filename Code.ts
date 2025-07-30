@@ -11,20 +11,20 @@ interface Member {
   height?: string;
   weight?: string;
   birthdate?: string;
-  introduction: string;
+  next_introduction: string;
   role: string;
   photos: {
     serious: string;
     casual: string[]; // comma-separated URLs
   }
-  workplace: string;
+  workplace?: string;
   university: string;
   enthusiasm: string;
   watchme: string;
   hobbies: string;
   favorite: string;
   gifts: string;
-  whatILikeAboutTriax: string;
+  what_i_like_about_triax: string;
 }
 
 interface APIResponse {
@@ -100,11 +100,11 @@ function fetchRosterData(): Member[] {
         alphabet: row[3] || ''
       },
       position: row[4] || '',
-      jersey: row[5] ? row[5].toString() : '',
-      height: row[6] ? row[6].toString() : '',
-      weight: row[7] ? row[7].toString() : '',
-      birthdate: row[8] ? new Date(row[8]).toISOString().split('T')[0] : '',
-      introduction: row[9] || '',
+      jersey: row[5] ? row[5].toString() : undefined,
+      height: row[6] ? row[6].toString() : undefined,
+      weight: row[7] ? row[7].toString() : undefined,
+      birthdate: row[8] ? new Date(row[8]).toISOString().split('T')[0] : undefined,
+      next_introduction: row[9] || undefined,
       role: row[10] || '',
       photos: {
         serious: row[11] || '',
@@ -117,7 +117,7 @@ function fetchRosterData(): Member[] {
       hobbies: row[17] || '',
       favorite: row[18] || '',
       gifts: row[19] || '',
-      whatILikeAboutTriax: row[20] || ''
+      what_i_like_about_triax: row[20] || ''
     });
   }
   
