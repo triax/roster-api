@@ -27,7 +27,7 @@ interface Member {
   whatILikeAboutTriax: string;
 }
 
-interface ApiResponse {
+interface APIResponse {
   success: boolean;
   data?: any;
   error?: string;
@@ -51,7 +51,7 @@ function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events
     const params = ev.parameter || {};
     
     // Route to appropriate handler based on query parameters
-    let response: ApiResponse;
+    let response: APIResponse;
     
     if (params.action === 'members' || !params.action) {
       response = handleMembersRequest(params);
@@ -125,7 +125,7 @@ function fetchRosterData(): Member[] {
 }
 
 // Handle requests for member data
-function handleMembersRequest(params: any): ApiResponse {
+function handleMembersRequest(params: any): APIResponse {
   const members = fetchRosterData();
   let filteredMembers = members;
   
@@ -189,7 +189,7 @@ function handleMembersRequest(params: any): ApiResponse {
 }
 
 // Get list of available positions
-function getAvailablePositions(): ApiResponse {
+function getAvailablePositions(): APIResponse {
   const members = fetchRosterData();
   const positions = new Set(members.map(m => m.position).filter(p => p));
   
