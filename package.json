@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "setup": "npx tsx scripts/setup.ts",
     "build": "tsc",
     "push": "npm run build && npx clasp push",
     "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
-    "deploy": "npx clasp deploy --description \"DEPLOY_$(date +%Y%m%d-%H%M%S)\"",
+    "deploy": "npx tsx scripts/deploy.ts",
     "release": "npm run push && npm run deploy"
   },
   "author": "otiai10",
@@ -15,6 +16,8 @@
   "devDependencies": {
     "@google/clasp": "^3.0.6-alpha",
     "@types/google-apps-script": "^1.0.99",
+    "@types/node": "^24.1.0",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
 }
