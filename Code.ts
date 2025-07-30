@@ -34,6 +34,28 @@ interface APIResponse {
   count?: number;
 }
 
+// Utility function to convert Google Drive sharing URLs to direct image URLs
+function convertDriveUrlToDirectImageUrl(driveUrl: string): string {
+  if (!driveUrl) return '';
+  
+  // Match various Google Drive URL patterns
+  const patterns = [
+    /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
+    /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
+    /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/
+  ];
+  
+  for (const pattern of patterns) {
+    const match = driveUrl.match(pattern);
+    if (match && match[1]) {
+      return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    }
+  }
+  
+  // If already a direct URL or doesn't match patterns, return as is
+  return driveUrl;
+}
+
 // Main entry point for GET requests
 function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events.DoGet): GoogleAppsScript.Content.TextOutput {
   const output = ContentService.createTextOutput();
@@ -99,8 +121,8 @@ function fetchRosterData(): Member[] {
       next_introduction: row[9] || undefined,
       role: row[10] || '',
       photos: {
-        serious: row[11] || '',
-        casual: row[12] ? row[12].split(',').map((url: string) => url.trim()).filter((url: string) => url) : []
+        serious: convertDriveUrlToDirectImageUrl(row[11] || ''),
+        casual: row[12] ? row[12].split(',').map((url: string) => convertDriveUrlToDirectImageUrl(url.trim())).filter((url: string) => url) : []
       },
       workplace: row[13] || '',
       university: row[14] || '',
