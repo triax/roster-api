@@ -1,2 +1,5 @@
 node_modules
 Code.js
+.clasp.json
+
+.claude/settings.local.json
