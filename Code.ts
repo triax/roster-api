@@ -34,6 +34,14 @@ interface ApiResponse {
   count?: number;
 }
 
+// Define PII fields that should be excluded by default
+const PII_FIELDS = [
+  'birthdate',
+  'workplace',
+  'university',
+  'photos'
+];
+
 // Main entry point for GET requests
 function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events.DoGet): GoogleAppsScript.Content.TextOutput {
   const output = ContentService.createTextOutput();
@@ -145,8 +153,11 @@ function handleMembersRequest(params: any): ApiResponse {
     );
   }
   
-  // Limit fields if specified
+  // Apply field filtering or PII removal
+  const includePII = params.includePII === 'true' || params.includePII === '1';
+  
   if (params.fields) {
+    // If specific fields are requested, return only those
     const fields = params.fields.split(',');
     filteredMembers = filteredMembers.map(member => {
       const limitedMember: any = {};
@@ -156,6 +167,17 @@ function handleMembersRequest(params: any): ApiResponse {
         }
       });
       return limitedMember;
+    });
+  } else if (!includePII) {
+    // Remove PII fields by default unless explicitly requested
+    filteredMembers = filteredMembers.map(member => {
+      const sanitizedMember: any = {};
+      Object.keys(member).forEach(key => {
+        if (!PII_FIELDS.includes(key)) {
+          sanitizedMember[key] = (member as any)[key];
+        }
+      });
+      return sanitizedMember;
     });
   }
   
