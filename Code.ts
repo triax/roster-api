@@ -67,22 +67,20 @@ function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events
   
   try {
     const params = ev.parameter || {};
-    
     // Route to appropriate handler based on query parameters
-    let response: APIResponse;
-    
     if (params.action === 'members' || !params.action) {
-      response = handleMembersRequest(params);
-    } else if (params.action === 'positions') {
-      response = getAvailablePositions();
-    } else {
-      response = {
-        success: false,
-        error: 'Invalid action. Available actions: members, positions'
-      };
+      const response = handleMembersRequest(params);
+      return output.setContent(JSON.stringify(response));
     }
-    
-    output.setContent(JSON.stringify(response));
+    if (params.action === 'positions') {
+      const response = getAvailablePositions();
+      return output.setContent(JSON.stringify(response));
+    }
+    const response = {
+      success: false,
+      error: 'Invalid action. Available actions: members, positions'
+    };
+    return output.setContent(JSON.stringify(response));
   } catch (error) {
     output.setContent(JSON.stringify({
       success: false,
