@@ -6,3 +6,5 @@ Code.js
 .deployment.json
 
 data
+dist/
+scripts/*.js
