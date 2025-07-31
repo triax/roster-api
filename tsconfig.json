@@ -4,13 +4,15 @@
     "module": "none",
     "types": ["google-apps-script"],
     "lib": ["ES2019"],
-    "skipLibCheck": false,
-    "typeRoots": ["./node_modules/@types"]
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types"],
+    "outDir": "./dist"
   },
   "include": [
-    "**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "scripts"
   ]
 }
