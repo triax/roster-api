@@ -27,9 +27,9 @@ interface Member {
   what_i_like_about_triax: string;
 }
 
-interface APIResponse {
+interface APIResponse<T> {
   success: boolean;
-  data?: any;
+  data?: T;
   error?: string;
   count?: number;
 }
