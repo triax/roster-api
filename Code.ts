@@ -5,7 +5,7 @@ interface Member {
     default: string; // Japanese name
     hiragana: string;
     alphabet: string;
-  }
+  };
   position: string;
   jersey?: string;
   height?: string;
@@ -16,7 +16,7 @@ interface Member {
   photos: {
     serious: string;
     casual: string[]; // comma-separated URLs
-  }
+  };
   workplace?: string;
   university: string;
   enthusiasm: string;
@@ -42,7 +42,7 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
   const patterns = [
     /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
-    /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/
+    /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/,
   ];
 
   for (const pattern of patterns) {
@@ -61,7 +61,9 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
 }
 
 // Main entry point for GET requests
-function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events.DoGet): GoogleAppsScript.Content.TextOutput {
+function doGet(
+  ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events.DoGet
+): GoogleAppsScript.Content.TextOutput {
   const output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
 
@@ -78,14 +80,16 @@ function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events
     }
     const response = {
       success: false,
-      error: 'Invalid action. Available actions: members, positions'
+      error: 'Invalid action. Available actions: members, positions',
     };
     return output.setContent(JSON.stringify(response));
   } catch (error) {
-    output.setContent(JSON.stringify({
-      success: false,
-      error: error.toString()
-    }));
+    output.setContent(
+      JSON.stringify({
+        success: false,
+        error: error.toString(),
+      })
+    );
   }
 
   return output;
@@ -113,7 +117,7 @@ function fetchRosterData(useThumbnails: boolean = false): Member[] {
       name: {
         default: row[1] || '',
         hiragana: row[2] || '',
-        alphabet: row[3] || ''
+        alphabet: row[3] || '',
       },
       position: row[4] || '',
       jersey: row[5] ? row[5].toString() : undefined,
@@ -124,7 +128,12 @@ function fetchRosterData(useThumbnails: boolean = false): Member[] {
       role: row[10] || '',
       photos: {
         serious: convertDriveUrlToDirectImageUrl(row[11] || '', useThumbnails),
-        casual: row[12] ? row[12].split(',').map((url: string) => convertDriveUrlToDirectImageUrl(url.trim(), useThumbnails)).filter((url: string) => url) : []
+        casual: row[12]
+          ? row[12]
+              .split(',')
+              .map((url: string) => convertDriveUrlToDirectImageUrl(url.trim(), useThumbnails))
+              .filter((url: string) => url)
+          : [],
       },
       workplace: row[13] || '',
       university: row[14] || '',
@@ -133,7 +142,7 @@ function fetchRosterData(useThumbnails: boolean = false): Member[] {
       hobbies: row[17] || '',
       favorite: row[18] || '',
       gifts: row[19] || '',
-      what_i_like_about_triax: row[20] || ''
+      what_i_like_about_triax: row[20] || '',
     });
   }
 
@@ -141,63 +150,62 @@ function fetchRosterData(useThumbnails: boolean = false): Member[] {
 }
 
 // Handle requests for member data
-function handleMembersRequest(params: any): APIResponse<Member[]> {
+function handleMembersRequest(params: Record<string, string>): APIResponse<Member[]> {
   const useThumbnails = params.thumbnails === 'true';
   const members = fetchRosterData(useThumbnails);
   let filteredMembers = members;
 
   // Filter by position if specified
   if (params.position) {
-    filteredMembers = members.filter(m =>
-      m.position.toLowerCase() === params.position.toLowerCase()
+    filteredMembers = members.filter(
+      (m) => m.position.toLowerCase() === params.position.toLowerCase()
     );
   }
 
   // Filter by jersey number if specified
   if (params.jerseyNumber) {
-    filteredMembers = members.filter(m =>
-      m.jersey === params.jerseyNumber
-    );
+    filteredMembers = members.filter((m) => m.jersey === params.jerseyNumber);
   }
 
   // Search by name if specified
   if (params.name) {
     const searchTerm = params.name.toLowerCase();
-    filteredMembers = members.filter(m =>
-      m.name.default.toLowerCase().includes(searchTerm) ||
-      m.name.hiragana.toLowerCase().includes(searchTerm) ||
-      m.name.alphabet.toLowerCase().includes(searchTerm)
+    filteredMembers = members.filter(
+      (m) =>
+        m.name.default.toLowerCase().includes(searchTerm) ||
+        m.name.hiragana.toLowerCase().includes(searchTerm) ||
+        m.name.alphabet.toLowerCase().includes(searchTerm)
     );
   }
 
   // Limit fields if specified
   if (params.fields) {
     const fields = params.fields.split(',');
-    filteredMembers = filteredMembers.map(member => {
-      const limitedMember: any = {};
+    filteredMembers = filteredMembers.map((member) => {
+      const limitedMember: Partial<Member> = {};
       fields.forEach((field: string) => {
         if (field in member) {
-          limitedMember[field] = member[field as keyof Member];
+          limitedMember[field as keyof Member] = member[field as keyof Member];
         }
       });
-      return limitedMember;
+      return limitedMember as Member;
     });
   }
 
   return {
     success: true,
     data: filteredMembers,
-    count: filteredMembers.length
+    count: filteredMembers.length,
   };
 }
 
 // Get list of available positions
 function getAvailablePositions(): APIResponse<string[]> {
   const members = fetchRosterData(false);
-  const positions = new Set(members.map(m => m.position).filter(p => p));
+  const positions = new Set(members.map((m) => m.position).filter((p) => p));
 
   return {
     success: true,
-    data: Array.from(positions).sort()
+    data: Array.from(positions).sort(),
   };
 }
