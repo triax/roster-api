@@ -37,14 +37,14 @@ interface APIResponse<T> {
 // Utility function to convert Google Drive sharing URLs to direct image URLs
 function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean = false): string {
   if (!driveUrl) return '';
-  
+
   // Match various Google Drive URL patterns
   const patterns = [
     /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/
   ];
-  
+
   for (const pattern of patterns) {
     const match = driveUrl.match(pattern);
     if (match && match[1]) {
@@ -55,7 +55,7 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
       }
     }
   }
-  
+
   // If already a direct URL or doesn't match patterns, return as is
   return driveUrl;
 }
@@ -64,7 +64,7 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
 function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events.DoGet): GoogleAppsScript.Content.TextOutput {
   const output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
-  
+
   try {
     const params = ev.parameter || {};
     // Route to appropriate handler based on query parameters
@@ -87,7 +87,7 @@ function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events
       error: error.toString()
     }));
   }
-  
+
   return output;
 }
 
@@ -95,19 +95,19 @@ function doGet(ev: GoogleAppsScript.Events.DoGet = {} as GoogleAppsScript.Events
 function fetchRosterData(useThumbnails: boolean = false): Member[] {
   const sheet = SpreadsheetApp.getActiveSheet();
   const data = sheet.getDataRange().getValues();
-  
+
   if (data.length < 2) {
     throw new Error('No data found in spreadsheet');
   }
-  
+
   // Skip header row and process data
   const members: Member[] = [];
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
-    
+
     // Skip empty rows
     if (!row[0] || !row[1]) continue;
-    
+
     members.push({
       timestamp: row[0] ? new Date(row[0]).toISOString() : '',
       name: {
@@ -136,7 +136,7 @@ function fetchRosterData(useThumbnails: boolean = false): Member[] {
       what_i_like_about_triax: row[20] || ''
     });
   }
-  
+
   return members;
 }
 
@@ -145,31 +145,31 @@ function handleMembersRequest(params: any): APIResponse<Member[]> {
   const useThumbnails = params.thumbnails === 'true';
   const members = fetchRosterData(useThumbnails);
   let filteredMembers = members;
-  
+
   // Filter by position if specified
   if (params.position) {
-    filteredMembers = members.filter(m => 
+    filteredMembers = members.filter(m =>
       m.position.toLowerCase() === params.position.toLowerCase()
     );
   }
-  
+
   // Filter by jersey number if specified
   if (params.jerseyNumber) {
-    filteredMembers = members.filter(m => 
+    filteredMembers = members.filter(m =>
       m.jersey === params.jerseyNumber
     );
   }
-  
+
   // Search by name if specified
   if (params.name) {
     const searchTerm = params.name.toLowerCase();
-    filteredMembers = members.filter(m => 
+    filteredMembers = members.filter(m =>
       m.name.default.toLowerCase().includes(searchTerm) ||
       m.name.hiragana.toLowerCase().includes(searchTerm) ||
       m.name.alphabet.toLowerCase().includes(searchTerm)
     );
   }
-  
+
   // Limit fields if specified
   if (params.fields) {
     const fields = params.fields.split(',');
@@ -183,7 +183,7 @@ function handleMembersRequest(params: any): APIResponse<Member[]> {
       return limitedMember;
     });
   }
-  
+
   return {
     success: true,
     data: filteredMembers,
@@ -195,7 +195,7 @@ function handleMembersRequest(params: any): APIResponse<Member[]> {
 function getAvailablePositions(): APIResponse<string[]> {
   const members = fetchRosterData(false);
   const positions = new Set(members.map(m => m.position).filter(p => p));
-  
+
   return {
     success: true,
     data: Array.from(positions).sort()

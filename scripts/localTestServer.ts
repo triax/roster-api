@@ -42,13 +42,13 @@ interface APIResponse {
 // Copy the URL conversion function
 function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean = false): string {
   if (!driveUrl) return '';
-  
+
   const patterns = [
     /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/
   ];
-  
+
   for (const pattern of patterns) {
     const match = driveUrl.match(pattern);
     if (match && match[1]) {
@@ -59,7 +59,7 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
       }
     }
   }
-  
+
   return driveUrl;
 }
 
@@ -67,18 +67,18 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
 function fetchRosterDataFromCSV(useThumbnails: boolean = false): Member[] {
   const csvPath = path.join(__dirname, '../data/2025_member_info_responses - Form Responses 1.csv');
   const fileContent = fs.readFileSync(csvPath, 'utf-8');
-  
+
   const records = parse(fileContent, {
     columns: false,
     skip_empty_lines: true,
     from_line: 2 // Skip header
   });
-  
+
   const members: Member[] = [];
-  
+
   for (const row of records) {
     if (!row[0] || !row[1]) continue;
-    
+
     members.push({
       timestamp: row[0] ? new Date(row[0]).toISOString() : '',
       name: {
@@ -107,7 +107,7 @@ function fetchRosterDataFromCSV(useThumbnails: boolean = false): Member[] {
       what_i_like_about_triax: row[20] || ''
     });
   }
-  
+
   return members;
 }
 
@@ -120,7 +120,7 @@ app.get('/', (req, res) => {
   try {
     const params = req.query;
     let response: APIResponse;
-    
+
     if (params.action === 'members' || !params.action) {
       response = handleMembersRequest(params);
     } else if (params.action === 'positions') {
@@ -131,7 +131,7 @@ app.get('/', (req, res) => {
         error: 'Invalid action. Available actions: members, positions'
       };
     }
-    
+
     res.json(response);
   } catch (error) {
     res.json({
@@ -146,31 +146,31 @@ function handleMembersRequest(params: any): APIResponse {
   const useThumbnails = params.thumbnails === 'true';
   const members = fetchRosterDataFromCSV(useThumbnails);
   let filteredMembers = members;
-  
+
   // Filter by position if specified
   if (params.position) {
-    filteredMembers = members.filter(m => 
+    filteredMembers = members.filter(m =>
       m.position.toLowerCase() === params.position.toLowerCase()
     );
   }
-  
+
   // Filter by jersey number if specified
   if (params.jerseyNumber) {
-    filteredMembers = members.filter(m => 
+    filteredMembers = members.filter(m =>
       m.jersey === params.jerseyNumber
     );
   }
-  
+
   // Search by name if specified
   if (params.name) {
     const searchTerm = params.name.toLowerCase();
-    filteredMembers = members.filter(m => 
+    filteredMembers = members.filter(m =>
       m.name.default.toLowerCase().includes(searchTerm) ||
       m.name.hiragana.toLowerCase().includes(searchTerm) ||
       m.name.alphabet.toLowerCase().includes(searchTerm)
     );
   }
-  
+
   // Limit fields if specified
   if (params.fields) {
     const fields = params.fields.split(',');
@@ -184,7 +184,7 @@ function handleMembersRequest(params: any): APIResponse {
       return limitedMember;
     });
   }
-  
+
   return {
     success: true,
     data: filteredMembers,
@@ -196,7 +196,7 @@ function handleMembersRequest(params: any): APIResponse {
 function getAvailablePositions(): APIResponse {
   const members = fetchRosterDataFromCSV(false);
   const positions = new Set(members.map(m => m.position).filter(p => p));
-  
+
   return {
     success: true,
     data: Array.from(positions).sort()
