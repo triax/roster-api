@@ -5,7 +5,7 @@
   "scripts": {
     "setup": "npx tsx scripts/setup.ts",
     "build": "tsc",
-    "push": "npm run build && npx clasp push",
+    "push": "npm run build && cp src/appsscript.json dist/ && npx clasp push",
     "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
     "deploy": "npx tsx scripts/deploy.ts",
     "release": "npm run push && npm run deploy",
