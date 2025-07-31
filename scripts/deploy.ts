@@ -37,15 +37,18 @@ function deploy(): void {
     if (existingDeploymentId) {
       console.log(`Updating existing deployment: ${existingDeploymentId}`);
       console.log(`Description: ${description}`);
-      output = execSync(`npx clasp deploy --deploymentId "${existingDeploymentId}" --description "${description}"`, {
-        encoding: 'utf8',
-        stdio: 'pipe'
-      });
+      output = execSync(
+        `npx clasp deploy --deploymentId "${existingDeploymentId}" --description "${description}"`,
+        {
+          encoding: 'utf8',
+          stdio: 'pipe',
+        }
+      );
     } else {
       console.log(`Creating new deployment: ${description}`);
       output = execSync(`npx clasp deploy --description "${description}"`, {
         encoding: 'utf8',
-        stdio: 'pipe'
+        stdio: 'pipe',
       });
     }
 

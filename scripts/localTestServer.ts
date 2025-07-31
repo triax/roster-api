@@ -10,7 +10,7 @@ interface Member {
     default: string;
     hiragana: string;
     alphabet: string;
-  }
+  };
   position: string;
   jersey?: string;
   height?: string;
@@ -21,7 +21,7 @@ interface Member {
   photos: {
     serious: string;
     casual: string[];
-  }
+  };
   workplace?: string;
   university: string;
   enthusiasm: string;
@@ -32,9 +32,9 @@ interface Member {
   what_i_like_about_triax: string;
 }
 
-interface APIResponse {
+interface APIResponse<T = unknown> {
   success: boolean;
-  data?: any;
+  data?: T;
   error?: string;
   count?: number;
 }
@@ -46,7 +46,7 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
   const patterns = [
     /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
     /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
-    /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/
+    /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/,
   ];
 
   for (const pattern of patterns) {
@@ -71,7 +71,7 @@ function fetchRosterDataFromCSV(useThumbnails: boolean = false): Member[] {
   const records = parse(fileContent, {
     columns: false,
     skip_empty_lines: true,
-    from_line: 2 // Skip header
+    from_line: 2, // Skip header
   });
 
   const members: Member[] = [];
@@ -84,7 +84,7 @@ function fetchRosterDataFromCSV(useThumbnails: boolean = false): Member[] {
       name: {
         default: row[1] || '',
         hiragana: row[2] || '',
-        alphabet: row[3] || ''
+        alphabet: row[3] || '',
       },
       position: row[4] || '',
       jersey: row[5] ? row[5].toString() : undefined,
@@ -95,7 +95,12 @@ function fetchRosterDataFromCSV(useThumbnails: boolean = false): Member[] {
       role: row[10] || '',
       photos: {
         serious: convertDriveUrlToDirectImageUrl(row[11] || '', useThumbnails),
-        casual: row[12] ? row[12].split(',').map((url: string) => convertDriveUrlToDirectImageUrl(url.trim(), useThumbnails)).filter((url: string) => url) : []
+        casual: row[12]
+          ? row[12]
+              .split(',')
+              .map((url: string) => convertDriveUrlToDirectImageUrl(url.trim(), useThumbnails))
+              .filter((url: string) => url)
+          : [],
       },
       workplace: row[13] || '',
       university: row[14] || '',
@@ -104,7 +109,7 @@ function fetchRosterDataFromCSV(useThumbnails: boolean = false): Member[] {
       hobbies: row[17] || '',
       favorite: row[18] || '',
       gifts: row[19] || '',
-      what_i_like_about_triax: row[20] || ''
+      what_i_like_about_triax: row[20] || '',
     });
   }
 
@@ -119,7 +124,7 @@ const PORT = 3000;
 app.get('/', (req, res) => {
   try {
     const params = req.query;
-    let response: APIResponse;
+    let response: APIResponse<Member[] | string[]>;
 
     if (params.action === 'members' || !params.action) {
       response = handleMembersRequest(params);
@@ -128,7 +133,7 @@ app.get('/', (req, res) => {
     } else {
       response = {
         success: false,
-        error: 'Invalid action. Available actions: members, positions'
+        error: 'Invalid action. Available actions: members, positions',
       };
     }
 
@@ -136,70 +141,69 @@ app.get('/', (req, res) => {
   } catch (error) {
     res.json({
       success: false,
-      error: error.toString()
+      error: error.toString(),
     });
   }
 });
 
 // Handle member requests
-function handleMembersRequest(params: any): APIResponse {
+function handleMembersRequest(params: Record<string, string>): APIResponse<Member[]> {
   const useThumbnails = params.thumbnails === 'true';
   const members = fetchRosterDataFromCSV(useThumbnails);
   let filteredMembers = members;
 
   // Filter by position if specified
   if (params.position) {
-    filteredMembers = members.filter(m =>
-      m.position.toLowerCase() === params.position.toLowerCase()
+    filteredMembers = members.filter(
+      (m) => m.position.toLowerCase() === params.position.toLowerCase()
     );
   }
 
   // Filter by jersey number if specified
   if (params.jerseyNumber) {
-    filteredMembers = members.filter(m =>
-      m.jersey === params.jerseyNumber
-    );
+    filteredMembers = members.filter((m) => m.jersey === params.jerseyNumber);
   }
 
   // Search by name if specified
   if (params.name) {
     const searchTerm = params.name.toLowerCase();
-    filteredMembers = members.filter(m =>
-      m.name.default.toLowerCase().includes(searchTerm) ||
-      m.name.hiragana.toLowerCase().includes(searchTerm) ||
-      m.name.alphabet.toLowerCase().includes(searchTerm)
+    filteredMembers = members.filter(
+      (m) =>
+        m.name.default.toLowerCase().includes(searchTerm) ||
+        m.name.hiragana.toLowerCase().includes(searchTerm) ||
+        m.name.alphabet.toLowerCase().includes(searchTerm)
     );
   }
 
   // Limit fields if specified
   if (params.fields) {
     const fields = params.fields.split(',');
-    filteredMembers = filteredMembers.map(member => {
-      const limitedMember: any = {};
+    filteredMembers = filteredMembers.map((member) => {
+      const limitedMember: Partial<Member> = {};
       fields.forEach((field: string) => {
         if (field in member) {
-          limitedMember[field] = member[field as keyof Member];
+          limitedMember[field as keyof Member] = member[field as keyof Member];
         }
       });
-      return limitedMember;
+      return limitedMember as Member;
     });
   }
 
   return {
     success: true,
     data: filteredMembers,
-    count: filteredMembers.length
+    count: filteredMembers.length,
   };
 }
 
 // Get available positions
-function getAvailablePositions(): APIResponse {
+function getAvailablePositions(): APIResponse<string[]> {
   const members = fetchRosterDataFromCSV(false);
-  const positions = new Set(members.map(m => m.position).filter(p => p));
+  const positions = new Set(members.map((m) => m.position).filter((p) => p));
 
   return {
     success: true,
-    data: Array.from(positions).sort()
+    data: Array.from(positions).sort(),
   };
 }
 

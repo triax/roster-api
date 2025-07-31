@@ -41,7 +41,6 @@ function setup(): void {
     console.log('  npm run push     - Push code to Google Apps Script');
     console.log('  npm run deploy   - Create a new deployment');
     console.log('  npm run release  - Push and deploy in one command');
-
   } catch (error) {
     console.error('Error reading .clasp.json:', (error as Error).message);
     process.exit(1);
