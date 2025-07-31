@@ -9,7 +9,10 @@
     "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
     "deploy": "npx tsx scripts/deploy.ts",
     "release": "npm run push && npm run deploy",
-    "test:local": "npx tsx scripts/localTestServer.ts"
+    "test:local": "npx tsx scripts/localTestServer.ts",
+    "lint": "eslint '**/*.ts'",
+    "lint:fix": "eslint '**/*.ts' --fix",
+    "format": "prettier --write '**/*.{ts,json,md}'"
   },
   "author": "otiai10",
   "license": "MIT",
@@ -19,8 +22,14 @@
     "@types/express": "^5.0.3",
     "@types/google-apps-script": "^1.0.99",
     "@types/node": "^24.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
     "csv-parse": "^6.1.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
     "express": "^5.1.0",
+    "prettier": "^3.6.2",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
