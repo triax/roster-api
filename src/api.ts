@@ -49,6 +49,7 @@ function handleMembersRequest(params: Record<string, string>): APIResponse<Membe
 
   return {
     success: true,
+    code: 200,
     data: filteredMembers,
     count: filteredMembers.length,
   };
@@ -64,6 +65,7 @@ function getAvailablePositions(): APIResponse<string[]> {
 
   return {
     success: true,
+    code: 200,
     data: Array.from(positions).sort(),
   };
 }

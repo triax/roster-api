@@ -10,36 +10,16 @@ function doGet(
 ): GoogleAppsScript.Content.TextOutput {
   const output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
-
   try {
     const params = ev.parameter || {};
-    
-    // Route to appropriate handler based on action parameter
-    if (params.action === 'members' || !params.action) {
-      const response = handleMembersRequest(params);
-      return output.setContent(JSON.stringify(response));
-    }
-    
-    if (params.action === 'positions') {
-      const response = getAvailablePositions();
-      return output.setContent(JSON.stringify(response));
-    }
-    
-    // Invalid action
+    const response = routes(params.action as string, params);
+    return output.setContent(JSON.stringify(response));
+  } catch (error) {
     const response = {
       success: false,
-      error: 'Invalid action. Available actions: members, positions',
+      code: 500,
+      error: error instanceof Error ? error.message : String(error),
     };
     return output.setContent(JSON.stringify(response));
-    
-  } catch (error) {
-    output.setContent(
-      JSON.stringify({
-        success: false,
-        error: error.toString(),
-      })
-    );
   }
-
-  return output;
 }

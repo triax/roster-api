@@ -29,6 +29,7 @@ interface Member {
 
 interface APIResponse<T> {
   success: boolean;
+  code: number;
   data?: T;
   error?: string;
   count?: number;
