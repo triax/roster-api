@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "npx tsx watch devserver/index.ts",
     "setup": "npx tsx scripts/setup.ts",
     "build": "tsc",
     "push": "npm run build && cp src/appsscript.json dist/ && npx clasp push",
     "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
     "deploy": "npx tsx scripts/deploy.ts",
     "release": "npm run push && npm run deploy",
-    "test:local": "npx tsx scripts/localTestServer.ts",
     "lint": "eslint '**/*.ts'",
     "lint:fix": "eslint '**/*.ts' --fix",
     "format": "prettier --write '**/*.{ts,json,md}'"
