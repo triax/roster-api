@@ -143,7 +143,7 @@ function fetchRosterData(useThumbnails: boolean = false): Member[] {
 }
 
 // Handle requests for member data
-function handleMembersRequest(params: any): APIResponse {
+function handleMembersRequest(params: any): APIResponse<Member[]> {
   const useThumbnails = params.thumbnails === 'true';
   const members = fetchRosterData(useThumbnails);
   let filteredMembers = members;
@@ -194,7 +194,7 @@ function handleMembersRequest(params: any): APIResponse {
 }
 
 // Get list of available positions
-function getAvailablePositions(): APIResponse {
+function getAvailablePositions(): APIResponse<string[]> {
   const members = fetchRosterData(false);
   const positions = new Set(members.map(m => m.position).filter(p => p));
   
