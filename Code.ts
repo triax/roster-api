@@ -182,13 +182,13 @@ function handleMembersRequest(params: Record<string, string>): APIResponse<Membe
   if (params.fields) {
     const fields = params.fields.split(',');
     filteredMembers = filteredMembers.map((member) => {
-      const limitedMember: Partial<Member> = {};
+      const limitedMember: Record<string, unknown> = {};
       fields.forEach((field: string) => {
         if (field in member) {
-          limitedMember[field as keyof Member] = member[field as keyof Member];
+          limitedMember[field] = member[field as keyof Member];
         }
       });
-      return limitedMember as Member;
+      return limitedMember as unknown as Member;
     });
   }
 
