@@ -23,6 +23,8 @@ The application follows a simple pipeline architecture:
 4. **Data Conversion** (`src/convert.ts`): Parses CSV and converts to structured JSON
    - Handles complex CSV parsing including quoted fields with commas
    - Converts Google Drive image URLs to direct access URLs
+   - Detects actual MIME types for images using Google Drive API
+   - Caches file metadata to optimize performance
    - Sorts members by jersey number
 
 5. **File Save** (`src/save.ts`): Writes the final JSON to `data/roster.json`
@@ -54,9 +56,10 @@ npm run dev
 ## Data Flow
 
 1. Main entry point (`main.ts`) orchestrates the entire process
-2. Member data includes personal info, position, photos, and preferences (see `src/types.ts` for `Member` and `RosterJSON` interfaces)
+2. Member data includes personal info, position, photos, and preferences (see `src/types.ts` for `Member`, `Photo` and `RosterJSON` interfaces)
 3. Output format follows `RosterJSON` interface with version and timestamp
-4. Images are converted from Google Drive sharing URLs to direct access URLs
+4. Images are converted from Google Drive sharing URLs to direct access URLs with actual MIME type detection
+5. Photo objects include both URL and MIME type (e.g., image/jpeg, image/png, image/heif)
 
 ## Notes
 

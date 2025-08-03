@@ -4,7 +4,7 @@ A TypeScript application that fetches team roster data from Google Sheets and co
 
 ## Overview
 
-This application authenticates with Google Drive API using service account credentials to export team roster data from a Google Sheets spreadsheet and convert it into a structured JSON format.
+This application authenticates with Google Drive API using service account credentials to export team roster data from a Google Sheets spreadsheet and convert it into a structured JSON format. The application also detects and includes MIME types for all images stored in Google Drive.
 
 ## Prerequisites
 
@@ -57,22 +57,39 @@ The application generates `data/roster.json` with the following structure:
 
 ```json
 {
-  "version": "1.0.0",
-  "timestamp": "2025-01-01T00:00:00.000Z",
+  "version": "1.0",
+  "updated_at": "2025-01-01T00:00:00.000Z",
   "members": [
     {
-      "number": 1,
-      "name": "Player Name",
-      "position": "Position",
-      "year": "2025",
-      "major": "Major",
-      "birthplace": "City",
-      "memo": "Additional info",
-      "photo_url": "https://...",
-      "photo_position": "center",
-      "cover_photo_url": "https://...",
-      "favorite_drink": "Drink",
-      "favorite_food": "Food"
+      "timestamp": "2025-01-01T00:00:00.000Z",
+      "name": {
+        "default": "選手名",
+        "hiragana": "せんしゅめい",
+        "alphabet": "Player Name"
+      },
+      "position": "QB",
+      "jersey": 1,
+      "next_introduction": "Introduction text",
+      "role": "Role in team",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/...",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/...",
+            "mime_type": "image/png"
+          }
+        ]
+      },
+      "university": "University Name",
+      "enthusiasm": "Player's enthusiasm",
+      "watchme": "What to watch",
+      "hobbies": "Hobbies",
+      "favorite": "Favorite things",
+      "gifts": "Gift preferences",
+      "what_i_like_about_triax": "What they like about the team"
     }
   ]
 }
@@ -81,6 +98,15 @@ The application generates `data/roster.json` with the following structure:
 ## GitHub Actions
 
 The repository includes a workflow that automatically updates roster data on a schedule. See `.github/workflows/update-roster-data.yml` for details.
+
+## Features
+
+- Fetches roster data from Google Sheets via Drive API
+- Converts CSV data to structured JSON format
+- Detects actual MIME types for images (e.g., image/jpeg, image/png, image/heif)
+- Converts Google Drive sharing URLs to direct access URLs
+- Caches metadata for improved performance
+- Sorts members by jersey number
 
 ## Development
 
