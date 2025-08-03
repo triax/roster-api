@@ -1,4 +1,9 @@
 
+export interface Photo {
+  url: string;
+  mime_type: string;
+}
+
 export interface Member {
   timestamp: string;
   name: {
@@ -14,8 +19,8 @@ export interface Member {
   next_introduction: string;
   role: string;
   photos: {
-    serious: string;
-    casual: string[]; // comma-separated URLs
+    serious: Photo;
+    casual: Photo[]; // comma-separated URLs
   };
   workplace?: string;
   university: string;

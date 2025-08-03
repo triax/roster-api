@@ -1,4 +1,68 @@
-import { type Member, type RosterJSON } from './types';
+import { type Member, type RosterJSON, type Photo } from './types';
+import { google } from 'googleapis';
+import { authenticate } from './auth';
+
+// Cache for file metadata to avoid repeated API calls
+const fileMetadataCache = new Map<string, string>();
+
+// Cache for authenticated Drive client
+let driveClient: any = null;
+
+/**
+ * Extract file ID from Google Drive URL
+ * @param driveUrl - The Google Drive URL
+ * @returns File ID or null
+ */
+function extractFileIdFromUrl(driveUrl: string): string | null {
+  if (!driveUrl) return null;
+
+  const patterns = [
+    /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
+    /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
+    /drive\.google\.com\/uc\?id=([a-zA-Z0-9_-]+)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = driveUrl.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Get MIME type for a Google Drive file
+ * @param fileId - The Google Drive file ID
+ * @returns MIME type string
+ */
+async function getFileMimeType(fileId: string): Promise<string> {
+  // Check cache first
+  if (fileMetadataCache.has(fileId)) {
+    return fileMetadataCache.get(fileId)!;
+  }
+
+  try {
+    // Initialize drive client once
+    if (!driveClient) {
+      const auth = authenticate();
+      driveClient = google.drive({ version: 'v3', auth });
+    }
+    
+    const response = await driveClient.files.get({
+      fileId: fileId,
+      fields: 'mimeType',
+    });
+
+    const mimeType = response.data.mimeType || 'image/jpeg';
+    fileMetadataCache.set(fileId, mimeType);
+    return mimeType;
+  } catch (error) {
+    console.warn(`Failed to get MIME type for file ${fileId}:`, error);
+    return 'image/jpeg'; // Default fallback
+  }
+}
 
 /**
  * Convert Google Drive sharing URLs to direct image URLs
@@ -31,6 +95,25 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
   return driveUrl;
 }
 
+/**
+ * Convert Google Drive URL to Photo object with URL and MIME type
+ * @param driveUrl - The Google Drive URL to convert
+ * @returns Photo object with direct URL and MIME type
+ */
+async function convertDriveUrlToPhoto(driveUrl: string): Promise<Photo> {
+  const fileId = extractFileIdFromUrl(driveUrl);
+  let mimeType = 'image/jpeg'; // Default
+  
+  if (fileId) {
+    mimeType = await getFileMimeType(fileId);
+  }
+  
+  return {
+    url: convertDriveUrlToDirectImageUrl(driveUrl),
+    mime_type: mimeType
+  };
+}
+
 function parseCSVLine(line: string): string[] {
   const values: string[] = [];
   let current = '';
@@ -53,7 +136,7 @@ function parseCSVLine(line: string): string[] {
   return values;
 }
 
-function convertLineToMember(line: string): Member {
+async function convertLineToMember(line: string): Promise<Member> {
   const values = parseCSVLine(line);
   
   // Parse casual photos - can be a single URL or multiple URLs separated by commas
@@ -67,6 +150,12 @@ function convertLineToMember(line: string): Member {
     // Single URL
     casualPhotos = [casualPhotosRaw.trim()];
   }
+  
+  // Convert photos with MIME type detection
+  const [seriousPhoto, ...casualPhotoObjects] = await Promise.all([
+    convertDriveUrlToPhoto(values[11]),
+    ...casualPhotos.map(url => convertDriveUrlToPhoto(url))
+  ]);
   
   return {
     timestamp: new Date(values[0]).toISOString(),
@@ -83,8 +172,8 @@ function convertLineToMember(line: string): Member {
     next_introduction: values[9],
     role: values[10],
     photos: {
-      serious: convertDriveUrlToDirectImageUrl(values[11]),
-      casual: casualPhotos.map(url => convertDriveUrlToDirectImageUrl(url)),
+      serious: seriousPhoto,
+      casual: casualPhotoObjects,
     },
     // workplace: values[13] || undefined,
     university: values[14],
@@ -97,14 +186,15 @@ function convertLineToMember(line: string): Member {
   };
 }
 
-export function convertCSVToJSON(csvstr: string): RosterJSON {
+export async function convertCSVToJSON(csvstr: string): Promise<RosterJSON> {
   const lines = csvstr.split('\n').map(line => line.trim()).filter(line => line.length > 0);
   // const headers = parseCSVLine(lines[0]);
   const rows = lines.slice(1);
-  const members: Member[] = rows.map(convertLineToMember).sort((prev, next) => (prev.jersey || 100) < (next.jersey || 100) ? -1 : 1);
+  const members: Member[] = await Promise.all(rows.map(convertLineToMember));
+  const sortedMembers = members.sort((prev, next) => (prev.jersey || 100) < (next.jersey || 100) ? -1 : 1);
   return {
     version: '1.0',
     updated_at: new Date().toISOString(),
-    members: members,
+    members: sortedMembers,
   };
 }
