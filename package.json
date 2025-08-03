@@ -3,34 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx tsx watch devserver/index.ts",
-    "setup": "npx tsx scripts/setup.ts",
-    "build": "tsc",
-    "push": "npm run build && cp src/appsscript.json dist/ && npx clasp push",
-    "archive": "npx clasp version \"$(date +%Y-%m-%d-%H%M%S)\"",
-    "deploy": "npx tsx scripts/deploy.ts",
-    "release": "npm run push && npm run deploy",
-    "lint": "eslint '**/*.ts'",
-    "lint:fix": "eslint '**/*.ts' --fix",
-    "format": "prettier --write '**/*.{ts,json,md}'"
+    "start": "npx tsx ./main.ts"
   },
   "author": "otiai10",
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@google/clasp": "^3.0.6-alpha",
-    "@types/express": "^5.0.3",
-    "@types/google-apps-script": "^1.0.99",
     "@types/node": "^24.1.0",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "@typescript-eslint/parser": "^8.38.0",
-    "csv-parse": "^6.1.0",
-    "eslint": "^9.32.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.3",
-    "express": "^5.1.0",
-    "prettier": "^3.6.2",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "googleapis": "^154.1.0"
   }
 }

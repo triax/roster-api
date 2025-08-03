@@ -2,107 +2,64 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Overview
 
-This is a Google Apps Script project that provides a REST API for accessing TRIAX American football team roster data. The API reads data from Google Sheets and returns JSON responses with member information, supporting filtering and field selection.
-
-## Development Commands
-
-- `npm run build` - Compile TypeScript files to JavaScript in dist/
-- `npm run lint` - Run ESLint to check code quality
-- `npm run lint:fix` - Auto-fix linting issues
-- `npm run format` - Format code with Prettier
-- `npm run push` - Build and push to Google Apps Script
-- `npm run deploy` - Create new deployment with timestamp
-- `npm run release` - Push and deploy in one command
-- `npm run test:local` - Run local test server with CSV data
-
-## Project Structure
-
-```
-├── src/                    # Google Apps Script source files
-│   ├── main.ts            # Entry point with doGet() function
-│   ├── api.ts             # API request handlers
-│   ├── sheets.ts          # Google Sheets data operations
-│   ├── utils.ts           # Utility functions (URL conversion)
-│   ├── types.ts           # TypeScript interface definitions
-│   └── appsscript.json    # GAS manifest configuration
-├── scripts/               # Development tools (executed with tsx)
-│   ├── deploy.ts          # Deployment automation
-│   ├── localTestServer.ts # Local testing server
-│   └── setup.ts           # Initial project setup
-├── dist/                  # Compiled output (git-ignored)
-└── data/                  # CSV test data (git-ignored)
-```
+This is a TypeScript application that fetches team roster data from a Google Sheets spreadsheet via Google Drive API and converts it to JSON format. The application authenticates using Google service account credentials and exports member data for the TRIAX team.
 
 ## Architecture
 
-The codebase follows a modular architecture with clear separation of concerns:
+The application follows a simple pipeline architecture:
 
-1. **main.ts** - Entry point with `doGet()` function that routes requests
-2. **api.ts** - Handles `/members` and `/positions` endpoints
-3. **sheets.ts** - Fetches and parses data from Google Sheets
-4. **utils.ts** - Converts Google Drive URLs for direct access
-5. **types.ts** - Defines Member interface and response types
+1. **Authentication** (`src/auth.ts`): Handles Google OAuth using service account credentials
+   - Supports both environment variable and local file authentication
+   - Uses `googleapis` library for API access
 
-API endpoints:
-- `/?action=members` (or no action) - Get roster members
-- `/?action=positions` - Get list of available positions
+2. **Target Resolution** (`src/target.ts`): Extracts Google Drive file ID from URL
+   - Default target is a specific Google Sheets document
+   - Can be overridden via `GOOGLE_DRIVE_TARGET_FILE_URL` environment variable
 
-Query parameters:
-- `position` - Filter by player position (WR, DB, RB, etc.)
-- `fields` - Comma-separated list of fields to return
-- `thumbnails=true` - Return thumbnail versions of images
-- `jerseyNumber` - Filter by jersey number
-- `name` - Search by name (Japanese/alphabet)
+3. **CSV Export** (`src/target.ts`): Exports Google Sheets as CSV using Drive API
 
-Data flow:
-1. CSV data from Google Sheets is parsed
-2. Google Drive image URLs are converted to direct access URLs
-3. Data is filtered and transformed based on query parameters
-4. JSON response is returned with appropriate CORS headers
+4. **Data Conversion** (`src/convert.ts`): Parses CSV and converts to structured JSON
+   - Handles complex CSV parsing including quoted fields with commas
+   - Converts Google Drive image URLs to direct access URLs
+   - Sorts members by jersey number
 
-## Build System
+5. **File Save** (`src/save.ts`): Writes the final JSON to `data/roster.json`
 
-- TypeScript compiles from `src/` to `dist/` directory with target ES2019
-- Only `dist/` contents are uploaded to Google Apps Script
-- ESLint v9 with flat config for code quality
-- Scripts in `scripts/` are excluded from GAS compilation
-- No module system - all files share global scope (GAS limitation)
+## Development Commands
 
-## API Data Model
+```bash
+# Install dependencies
+npm install
 
-The Member interface includes:
-- Personal info: name (Japanese/hiragana/alphabet), birthdate
-- Team info: position, jersey number, role
-- Physical: height, weight
-- Media: photos (serious/casual) with Google Drive integration
-- Personal: workplace, university, hobbies, favorites
+# Run the application (fetches and converts roster data)
+npm start
 
-Response format:
-```typescript
-{
-  success: boolean;
-  data?: Member[] | string[];
-  error?: string;
-}
+# TypeScript compilation (no build step needed - uses tsx)
+# The project uses tsx for direct TypeScript execution
 ```
 
-## Local Development
+## Environment Variables
 
-The project includes a local test server that mimics the production API:
-- Uses Express.js to simulate Google Apps Script endpoints
-- Reads from CSV file instead of Google Sheets
-- Same endpoints, filtering, and response format as production
-- Supports Japanese text (UTF-8)
+- `GOOGLE_SERVICE_ACCOUNT_KEY_JSON`: JSON string containing service account credentials
+- `GOOGLE_DRIVE_TARGET_FILE_URL`: Override the default Google Sheets URL
 
-## Key Considerations
+## Key Dependencies
 
-- Google Apps Script environment - not Node.js
-- Functions like `doGet` are global entry points
-- No module system - all files share global scope
-- Uses Google Sheets as data source
-- Handles Japanese text (UTF-8)
-- Converts Google Drive URLs for direct image access
-- Deployment tracking via `.deployment.json`
-- Automated deployment with timestamp versioning
+- `googleapis`: Google API client for accessing Drive/Sheets
+- `tsx`: TypeScript execution without compilation
+- TypeScript with ES2019 target and Node.js module resolution
+
+## Data Flow
+
+1. Main entry point (`main.ts`) orchestrates the entire process
+2. Member data includes personal info, position, photos, and preferences
+3. Output format follows `RosterJSON` interface with version and timestamp
+4. Images are converted from Google Drive sharing URLs to direct access URLs
+
+## Notes
+
+- Service account credentials can be provided via environment variable or local `service-account-key.json` file
+- The application is designed to run as a scheduled job (see staged GitHub Actions workflow)
+- Data specification is documented in `spec/DATA_SPEC.md`

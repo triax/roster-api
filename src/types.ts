@@ -1,5 +1,5 @@
-// Type definitions for roster data
-interface Member {
+
+export interface Member {
   timestamp: string;
   name: {
     default: string; // Japanese name
@@ -7,7 +7,7 @@ interface Member {
     alphabet: string;
   };
   position: string;
-  jersey?: string;
+  jersey?: number;
   height?: string;
   weight?: string;
   birthdate?: string;
@@ -27,10 +27,8 @@ interface Member {
   what_i_like_about_triax: string;
 }
 
-interface APIResponse<T> {
-  success: boolean;
-  code: number;
-  data?: T;
-  error?: string;
-  count?: number;
+export interface RosterJSON {
+  version: string;
+  updated_at: string;
+  members: Member[];
 }

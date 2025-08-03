@@ -1,10 +1,4 @@
 node_modules
-Code.js
-.clasp.json
-
+devdata
+service-account-key.json
 .claude/settings.local.json
-.deployment.json
-
-data
-dist/
-scripts/*.js

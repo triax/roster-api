@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2019",
-    "module": "none",
-    "types": ["google-apps-script"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
     "lib": ["ES2019"],
-    "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types"],
-    "outDir": "./dist"
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "main.ts"
   ],
   "exclude": [
     "node_modules",

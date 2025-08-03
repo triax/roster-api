@@ -1,1 +1,0 @@
-Make some commits from current modified / added files, with consulting with git-semmantic-commiter agent.
