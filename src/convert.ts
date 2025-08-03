@@ -22,7 +22,7 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
       if (useThumbnail) {
         return `https://drive.google.com/thumbnail?id=${match[1]}`;
       } else {
-        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        return `https://drive.usercontent.google.com/download?id=${match[1]}&export=view`
       }
     }
   }
