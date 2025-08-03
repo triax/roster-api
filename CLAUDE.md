@@ -36,8 +36,8 @@ npm install
 # Run the application (fetches and converts roster data)
 npm start
 
-# TypeScript compilation (no build step needed - uses tsx)
-# The project uses tsx for direct TypeScript execution
+# Run with console output of the roster data
+npm run dev
 ```
 
 ## Environment Variables
@@ -54,12 +54,13 @@ npm start
 ## Data Flow
 
 1. Main entry point (`main.ts`) orchestrates the entire process
-2. Member data includes personal info, position, photos, and preferences
+2. Member data includes personal info, position, photos, and preferences (see `src/types.ts` for `Member` and `RosterJSON` interfaces)
 3. Output format follows `RosterJSON` interface with version and timestamp
 4. Images are converted from Google Drive sharing URLs to direct access URLs
 
 ## Notes
 
 - Service account credentials can be provided via environment variable or local `service-account-key.json` file
-- The application is designed to run as a scheduled job (see staged GitHub Actions workflow)
+- The application is designed to run as a scheduled job
 - Data specification is documented in `spec/DATA_SPEC.md`
+- The `--dump` flag can be passed to output the roster JSON to console
