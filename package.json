@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsx ./main.ts"
+    "start": "npx tsx ./main.ts",
+    "dev": "npx tsx ./main.ts --dump"
   },
   "author": "otiai10",
   "license": "MIT",

@@ -8,6 +8,12 @@ async function main() {
   const roster = convertCSVToJSON(content.data.toString());
   const filename = await saveRosterToFile(roster);
   console.log(`Roster saved to ${filename}`);
+  const args = process.argv.slice(2);
+  if (args.includes('--dump')) {
+    console.log('Dumping roster to console:');
+    console.log(JSON.stringify(roster, null, 2));
+  }
+  return filename;
 }
 
 main().catch(console.error);
