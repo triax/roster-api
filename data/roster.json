@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated_at": "2025-08-03T18:15:14.448Z",
+  "updated_at": "2025-08-04T00:25:53.023Z",
   "members": [
     {
       "timestamp": "2025-08-01T00:38:53.000Z",
@@ -1648,13 +1648,13 @@
       "role": "スタッフ、SNS担当",
       "photos": {
         "serious": {
-          "url": "https://drive.usercontent.google.com/download?id=1Q5vH8TiuSnk5APZDLqKpijqfxBxL7CIE&export=view",
-          "mime_type": "image/heif"
+          "url": "https://drive.usercontent.google.com/download?id=1gFyrIpRE_-Z0hd273nowYi0t15KptGwD&export=view",
+          "mime_type": "image/jpeg"
         },
         "casual": [
           {
-            "url": "https://drive.usercontent.google.com/download?id=1l5TMFqFkmFmT2LzU1A002YS5J1VaU_a8&export=view",
-            "mime_type": "image/heif"
+            "url": "https://drive.usercontent.google.com/download?id=1W5WdHFNmCEILqGZnA2p68gDgik67eyIm&export=view",
+            "mime_type": "image/jpeg"
           }
         ]
       },
