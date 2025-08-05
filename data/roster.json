@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated_at": "2025-08-04T00:25:53.023Z",
+  "updated_at": "2025-08-05T08:35:41.435Z",
   "members": [
     {
       "timestamp": "2025-08-01T00:38:53.000Z",
@@ -1189,6 +1189,45 @@
       "what_i_like_about_triax": "みんな結局真面目なところ"
     },
     {
+      "timestamp": "2025-08-04T08:58:41.000Z",
+      "name": {
+        "default": "吉澤僚馬",
+        "hiragana": "よしざわりょうま",
+        "alphabet": "Ryoma Yoshizawa"
+      },
+      "position": "Sp",
+      "jersey": 81,
+      "next_introduction": "彼スナッパーもできます。しかも上手い。優秀。",
+      "role": "全国の抹茶スイーツ",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=1DRv1RvRpk1AfIt7Z98v4JjdxAA8ZYsz6&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1Te_eUEcY4ZlTM2yXCkMcApC33uwu_BnB&export=view",
+            "mime_type": "image/jpeg"
+          },
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1aXxA3bONpeH8-omVV0jfoeLbf0NnbwBU&export=view",
+            "mime_type": "image/jpeg"
+          },
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1CwjykJhvH6PexQZ2MlcsU-zYvZEt9VtM&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "早稲田大学",
+      "enthusiasm": "TD1本",
+      "watchme": "バッキバキのももとおしり、脚力",
+      "hobbies": "たくさん寝るたくさん食べる自然と戯れる",
+      "favorite": "推しP：Marquette King、pat mcafee",
+      "gifts": "抹茶カステラ、千葉ロッテ観戦チケット、（私のスポンサーになってくださる人や企業のご紹介）",
+      "what_i_like_about_triax": "練習場所全て人工芝、家からまだ近い"
+    },
+    {
       "timestamp": "2025-07-31T12:16:22.000Z",
       "name": {
         "default": "木村龍太郎",
@@ -1319,6 +1358,37 @@
       "favorite": "アーティスト、清水翔太",
       "gifts": "冷たいお茶",
       "what_i_like_about_triax": "アサイメントが深いところ"
+    },
+    {
+      "timestamp": "2025-08-04T13:08:54.000Z",
+      "name": {
+        "default": "梅川修一",
+        "hiragana": "うめかわしゅういち",
+        "alphabet": "umekawa shuichi"
+      },
+      "position": "DL",
+      "jersey": 91,
+      "next_introduction": "よろしくお願いします。",
+      "role": "なし",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=1WAMlkiQ9SgUlm3zeadiwCrHGmzwUw4nD&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1nG-CImDKuRUnWeHbVW0QYdfAYbg0fW2H&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "京都大学",
+      "enthusiasm": "頑張ります。",
+      "watchme": "パスラッシュ",
+      "hobbies": "いろいろ",
+      "favorite": "推しアーティスト、清水翔太",
+      "gifts": "冷たいお茶",
+      "what_i_like_about_triax": "みんな真剣なところ"
     },
     {
       "timestamp": "2025-07-29T10:51:57.000Z",
@@ -1517,36 +1587,6 @@
       "what_i_like_about_triax": "真面目さ"
     },
     {
-      "timestamp": "2025-07-30T09:39:56.000Z",
-      "name": {
-        "default": "尹 嫣",
-        "hiragana": "いん えん",
-        "alphabet": "YAN YIN"
-      },
-      "position": "Staff",
-      "next_introduction": "",
-      "role": "外国語を喋ってくれるひと",
-      "photos": {
-        "serious": {
-          "url": "https://drive.usercontent.google.com/download?id=19o8u715BBDsI9tWhu-2zLSbyBR1n5aPa&export=view",
-          "mime_type": "image/jpeg"
-        },
-        "casual": [
-          {
-            "url": "https://drive.usercontent.google.com/download?id=1DsJj49eJcxjnqxW46lSZcG4d_nRNavcn&export=view",
-            "mime_type": "image/jpeg"
-          }
-        ]
-      },
-      "university": "早稲田大学",
-      "enthusiasm": "落合HCをめちゃくちゃ応援する",
-      "watchme": "落合HCへの熱い想い",
-      "hobbies": "だらだらする",
-      "favorite": "ハイエナ",
-      "gifts": "",
-      "what_i_like_about_triax": "偏差値が高そう"
-    },
-    {
       "timestamp": "2025-07-30T09:48:52.000Z",
       "name": {
         "default": "加洲大輔",
@@ -1695,6 +1735,36 @@
       "favorite": "アーティスト:wave to earth",
       "gifts": "",
       "what_i_like_about_triax": "暖かい雰囲気"
+    },
+    {
+      "timestamp": "2025-08-04T14:14:54.000Z",
+      "name": {
+        "default": "尹 嫣",
+        "hiragana": "いん えん",
+        "alphabet": "YIN YAN"
+      },
+      "position": "Staff",
+      "next_introduction": "",
+      "role": "グラウンド予約係",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=1gUyzW5ehMe0WEeV041gIOEW_T6aKzSok&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=12P2q8LtDsD74LJ9iNDLLG5C6Rogh9rR0&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "早稲田大学",
+      "enthusiasm": "落合HCを応援しています！",
+      "watchme": "落合HCへの熱い想い",
+      "hobbies": "だらだら、ごろごろ",
+      "favorite": "ハイエナ",
+      "gifts": "塩分チャージ、プロテイン",
+      "what_i_like_about_triax": "偏差値が高そうなところ"
     }
   ]
 }
