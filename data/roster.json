@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated_at": "2025-08-05T08:35:41.435Z",
+  "updated_at": "2025-08-11T02:21:27.540Z",
   "members": [
     {
       "timestamp": "2025-08-01T00:38:53.000Z",
@@ -660,6 +660,37 @@
       "favorite": "ヤジマリー",
       "gifts": "あん団子",
       "what_i_like_about_triax": "LIFE・WORK・PLAY"
+    },
+    {
+      "timestamp": "2025-08-10T00:31:45.000Z",
+      "name": {
+        "default": "栗山　尚也",
+        "hiragana": "くりやま　なおや",
+        "alphabet": "Kuriyama Naoya"
+      },
+      "position": "DB",
+      "jersey": 37,
+      "next_introduction": "頑張りましょう！",
+      "role": "気持ちはフレッシュマン",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=19wTxfrlQNHCeDTs6V2vm51pLZbYdQ7oT&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1_lsFVbg4Cfp3kJCk4xmDzP5JjbwtJ8B1&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "中央大学",
+      "enthusiasm": "目指せTD",
+      "watchme": "勝負どころでのインターセプト",
+      "hobbies": "Switch2・クロスフィット・旅行",
+      "favorite": "TWICE",
+      "gifts": "任天堂のプリペイドカード",
+      "what_i_like_about_triax": "メリハリ"
     },
     {
       "timestamp": "2025-07-29T02:43:05.000Z",
@@ -1765,6 +1796,36 @@
       "favorite": "ハイエナ",
       "gifts": "塩分チャージ、プロテイン",
       "what_i_like_about_triax": "偏差値が高そうなところ"
+    },
+    {
+      "timestamp": "2025-08-06T03:10:58.000Z",
+      "name": {
+        "default": "久保　今日子",
+        "hiragana": "くぼ　きょうこ",
+        "alphabet": "KYOKO"
+      },
+      "position": "Staff",
+      "next_introduction": "",
+      "role": "ファンクラブ・集客担当",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=1__NZCjvdCVHAz4havfQfnSzZ2NiUBe_J&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1gu-t-b4Na18xOI468GmSM2UBbUAHO_sK&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "愛知学院大学",
+      "enthusiasm": "選手たちが主役になって沢山のファンの方に応援してもらえるようなコンテンツやファンクラブを作ります。",
+      "watchme": "身長です。",
+      "hobbies": "スポーツ観戦・美術鑑賞・音楽・おいしいものを食べる・旅行",
+      "favorite": "伝統工芸を広げる活動や職人さんの話を聞く事",
+      "gifts": "ファンクラブ入会　推し選手を作ってくれた嬉しいです。推しSTAFFも作ってくれたら嬉しいです。",
+      "what_i_like_about_triax": "みんないいキャラクターをもっていて、真剣に楽しんでアメフトをしているところが好きです。"
     }
   ]
 }
