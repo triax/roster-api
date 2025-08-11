@@ -6,7 +6,7 @@ import { authenticate } from './auth';
 const fileMetadataCache = new Map<string, string>();
 
 // Cache for authenticated Drive client
-let driveClient: any = null;
+let driveClient: ReturnType<typeof google.drive> | null = null;
 
 /**
  * Extract file ID from Google Drive URL
@@ -49,7 +49,7 @@ async function getFileMimeType(fileId: string): Promise<string> {
       const auth = authenticate();
       driveClient = google.drive({ version: 'v3', auth });
     }
-    
+
     const response = await driveClient.files.get({
       fileId: fileId,
       fields: 'mimeType',
@@ -86,7 +86,7 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
       if (useThumbnail) {
         return `https://drive.google.com/thumbnail?id=${match[1]}`;
       } else {
-        return `https://drive.usercontent.google.com/download?id=${match[1]}&export=view`
+        return `https://drive.usercontent.google.com/download?id=${match[1]}&export=view`;
       }
     }
   }
@@ -103,14 +103,14 @@ function convertDriveUrlToDirectImageUrl(driveUrl: string, useThumbnail: boolean
 async function convertDriveUrlToPhoto(driveUrl: string): Promise<Photo> {
   const fileId = extractFileIdFromUrl(driveUrl);
   let mimeType = 'image/jpeg'; // Default
-  
+
   if (fileId) {
     mimeType = await getFileMimeType(fileId);
   }
-  
+
   return {
     url: convertDriveUrlToDirectImageUrl(driveUrl),
-    mime_type: mimeType
+    mime_type: mimeType,
   };
 }
 
@@ -118,10 +118,10 @@ function parseCSVLine(line: string): string[] {
   const values: string[] = [];
   let current = '';
   let inQuotes = false;
-  
+
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
-    
+
     if (char === '"') {
       inQuotes = !inQuotes;
     } else if (char === ',' && !inQuotes) {
@@ -131,18 +131,18 @@ function parseCSVLine(line: string): string[] {
       current += char;
     }
   }
-  
+
   values.push(current.trim());
   return values;
 }
 
 async function convertLineToMember(line: string): Promise<Member> {
   const values = parseCSVLine(line);
-  
+
   // Parse casual photos - can be a single URL or multiple URLs separated by commas
   const casualPhotosRaw = values[12];
   let casualPhotos: string[] = [];
-  
+
   if (casualPhotosRaw.includes(',')) {
     // Multiple URLs separated by commas
     casualPhotos = casualPhotosRaw.split(',').map(url => url.trim());
@@ -150,13 +150,13 @@ async function convertLineToMember(line: string): Promise<Member> {
     // Single URL
     casualPhotos = [casualPhotosRaw.trim()];
   }
-  
+
   // Convert photos with MIME type detection
   const [seriousPhoto, ...casualPhotoObjects] = await Promise.all([
     convertDriveUrlToPhoto(values[11]),
-    ...casualPhotos.map(url => convertDriveUrlToPhoto(url))
+    ...casualPhotos.map(url => convertDriveUrlToPhoto(url)),
   ]);
-  
+
   return {
     timestamp: new Date(values[0]).toISOString(),
     name: {
