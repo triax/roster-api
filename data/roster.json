@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated_at": "2025-08-11T08:50:09.684Z",
+  "updated_at": "2025-08-11T18:23:06.119Z",
   "members": [
     {
       "timestamp": "2025-08-01T09:38:53.000Z",
@@ -187,6 +187,37 @@
       "favorite": "NORMのプロテイン",
       "gifts": "げんなま",
       "what_i_like_about_triax": "練習、試合に子どもを連れていったら遊んでくれる素敵な女性陣"
+    },
+    {
+      "timestamp": "2025-08-11T18:33:43.000Z",
+      "name": {
+        "default": "勝浩介",
+        "hiragana": "かつこうすけ",
+        "alphabet": "Katsu Kosuke"
+      },
+      "position": "LB",
+      "jersey": 8,
+      "next_introduction": "上京してきた風来坊。ふてぶてしさはまさにQBそのもの。秋は呑んだテキーラの杯数では無く、TDパス数でぜひリーグを引っ張って欲しい。",
+      "role": "僭越ながら、風紀委員長を務めております",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=1tugYD_Q86qd--hxRZsIw35E4ScR6xEzw&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1v0PUVcIY_6sry5rCBqs2iJw44sALyL8n&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "東京大学、東海中学/高等学校、片平小学校",
+      "enthusiasm": "チームに若い人が増えてきたので、改めて応援されるに相応しい風紀作りを目指します。",
+      "watchme": "風紀委員長に相応しい丁寧なプレイ",
+      "hobbies": "町の風紀改善に尽力しております",
+      "favorite": "みんなに対して平等です",
+      "gifts": "何も要らないとは言いません！",
+      "what_i_like_about_triax": "風紀委員長として言わせてください、スタッフが綺麗です"
     },
     {
       "timestamp": "2025-08-01T20:36:52.000Z",
@@ -1826,6 +1857,36 @@
       "favorite": "伝統工芸を広げる活動や職人さんの話を聞く事",
       "gifts": "ファンクラブ入会　推し選手を作ってくれた嬉しいです。推しSTAFFも作ってくれたら嬉しいです。",
       "what_i_like_about_triax": "みんないいキャラクターをもっていて、真剣に楽しんでアメフトをしているところが好きです。"
+    },
+    {
+      "timestamp": "2025-08-11T19:25:19.000Z",
+      "name": {
+        "default": "乃村　行彦",
+        "hiragana": "のむら　ゆきひこ",
+        "alphabet": "Nomura Yukihiko"
+      },
+      "position": "Coach",
+      "next_introduction": "",
+      "role": "子連れおじさん",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=1vtC0zyA0WJg247ixe7NigY_SM-Qj1NJL&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1KQjGIJzbvpfOjKlJucMihoOyKKAbHL-5&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "神戸大学",
+      "enthusiasm": "チームに貢献",
+      "watchme": "チームに貢献",
+      "hobbies": "子供と遊ぶ",
+      "favorite": "息子",
+      "gifts": "大きな声援",
+      "what_i_like_about_triax": "Life Work Play"
     }
   ]
 }
