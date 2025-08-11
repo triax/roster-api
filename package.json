@@ -4,13 +4,18 @@
   "main": "index.js",
   "scripts": {
     "start": "npx tsx ./main.ts",
-    "dev": "npx tsx ./main.ts --dump"
+    "dev": "npx tsx ./main.ts --dump",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "author": "otiai10",
   "license": "MIT",
   "description": "",
   "devDependencies": {
     "@types/node": "^24.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "eslint": "^9.33.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
