@@ -57,8 +57,8 @@ jobs:
       - name: Commit and push changes
         if: steps.check_changes.outputs.changed == 'true'
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --local user.email "otiai10+ayanel-ci@gmail.com"
+          git config --local user.name "ayanel-ci"
           git add data/roster.json
           git commit -m "Update roster data [skip ci]"
           git push
