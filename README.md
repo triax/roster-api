@@ -95,9 +95,44 @@ The application generates `data/roster.json` with the following structure:
 }
 ```
 
-## GitHub Actions
+## GitHub Actions Automation
 
-The repository includes a workflow that automatically updates roster data on a schedule. See `.github/workflows/update-roster-data.yml` for details.
+This repository includes automated roster data updates via GitHub Actions.
+
+### Automatic Updates
+
+The workflow (`.github/workflows/update-roster.yml`) runs:
+- **Daily at 3:00 AM JST** (midnight UTC+9)
+- **On-demand** via GitHub Actions UI (workflow_dispatch)
+- **On push** to main branch when source files change
+
+### Setup Instructions
+
+1. **Add Service Account Credentials to GitHub Secrets:**
+   
+   a. Get your service account JSON from `service-account-key.json`
+   b. Go to repository Settings → Secrets and variables → Actions
+   c. Click "New repository secret"
+   d. Name: `GOOGLE_SERVICE_ACCOUNT_KEY_JSON`
+   e. Value: Paste the entire JSON content from your service account key file
+   f. Click "Add secret"
+
+2. **Manual Trigger:**
+   
+   - Go to Actions tab → "Update Roster Data" workflow
+   - Click "Run workflow" → Select branch → Run
+
+3. **Monitor Execution:**
+   
+   - Check Actions tab for workflow status
+   - Failed runs automatically create GitHub Issues for notification
+
+### Features
+
+- Automatic commit of updated `data/roster.json`
+- Skip commits when no data changes detected
+- Error notifications via GitHub Issues
+- Secure credential management via GitHub Secrets
 
 ## Features
 
