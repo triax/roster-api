@@ -1,59 +1,59 @@
 # Roster API
 
-A TypeScript application that fetches team roster data from Google Sheets and converts it to JSON format.
+Google スプレッドシートからチームの名簿データを取得し、JSON 形式に変換する TypeScript アプリケーション。
 
-## Overview
+## 概要
 
-This application authenticates with Google Drive API using service account credentials to export team roster data from a Google Sheets spreadsheet and convert it into a structured JSON format. The application also detects and includes MIME types for all images stored in Google Drive.
+このアプリケーションは、サービスアカウント認証を使用して Google Drive API に接続し、Google スプレッドシートからチームの名簿データをエクスポートして構造化された JSON 形式に変換します。また、Google Drive に保存されているすべての画像の MIME タイプを検出して含めます。
 
-## Prerequisites
+## 前提条件
 
-- Node.js and npm installed
-- Google service account credentials with access to the target Google Sheets document
+- Node.js と npm がインストールされていること
+- ターゲットの Google スプレッドシートドキュメントへのアクセス権を持つ Google サービスアカウント認証情報
 
-## Installation
+## インストール
 
 ```bash
 npm install
 ```
 
-## Configuration
+## 設定
 
-### Authentication
+### 認証
 
-Provide Google service account credentials using one of these methods:
+Google サービスアカウント認証情報は、以下のいずれかの方法で提供します：
 
-1. Environment variable:
+1. 環境変数:
    ```bash
    export GOOGLE_SERVICE_ACCOUNT_KEY_JSON='{"type":"service_account",...}'
    ```
 
-2. Local file:
-   Create `service-account-key.json` in the project root
+2. ローカルファイル:
+   プロジェクトルートに `service-account-key.json` を作成
 
-### Target Spreadsheet
+### ターゲットスプレッドシート
 
-Set a custom Google Sheets URL (optional):
+カスタム Google スプレッドシート URL を設定（オプション）:
 ```bash
 export GOOGLE_DRIVE_TARGET_FILE_URL='https://docs.google.com/spreadsheets/d/YOUR_FILE_ID'
 ```
 
-## Usage
+## 使用方法
 
 ```bash
-# Fetch roster data and save to data/roster.json
+# 名簿データを取得して data/roster.json に保存
 npm start
 
-# Fetch roster data and output to console
+# 名簿データを取得してコンソールに出力
 npm run dev
 
-# With dump flag
+# dump フラグ付きで実行
 npm start -- --dump
 ```
 
-## Output
+## 出力
 
-The application generates `data/roster.json` with the following structure:
+アプリケーションは以下の構造で `data/roster.json` を生成します：
 
 ```json
 {
@@ -69,8 +69,8 @@ The application generates `data/roster.json` with the following structure:
       },
       "position": "QB",
       "jersey": 1,
-      "next_introduction": "Introduction text",
-      "role": "Role in team",
+      "next_introduction": "紹介文",
+      "role": "チーム内での役割",
       "photos": {
         "serious": {
           "url": "https://drive.usercontent.google.com/...",
@@ -83,72 +83,72 @@ The application generates `data/roster.json` with the following structure:
           }
         ]
       },
-      "university": "University Name",
-      "enthusiasm": "Player's enthusiasm",
-      "watchme": "What to watch",
-      "hobbies": "Hobbies",
-      "favorite": "Favorite things",
-      "gifts": "Gift preferences",
-      "what_i_like_about_triax": "What they like about the team"
+      "university": "大学名",
+      "enthusiasm": "選手の意気込み",
+      "watchme": "注目ポイント",
+      "hobbies": "趣味",
+      "favorite": "好きなもの",
+      "gifts": "プレゼントの好み",
+      "what_i_like_about_triax": "チームの好きなところ"
     }
   ]
 }
 ```
 
-## GitHub Actions Automation
+## GitHub Actions 自動化
 
-This repository includes automated roster data updates via GitHub Actions.
+このリポジトリは GitHub Actions による名簿データの自動更新を実装しています。
 
-### Automatic Updates
+### 自動更新
 
-The workflow (`.github/workflows/update-roster.yml`) runs:
-- **Daily at 3:00 AM JST** (midnight UTC+9)
-- **On-demand** via GitHub Actions UI (workflow_dispatch)
-- **On push** to main branch when source files change
+ワークフロー (`.github/workflows/update-roster.yml`) は以下のタイミングで実行されます：
+- **毎日午前 3:00 (JST)**
+- **手動実行** - GitHub Actions UI から workflow_dispatch で実行
+- **プッシュ時** - main ブランチのソースファイル変更時
 
-### Setup Instructions
+### セットアップ手順
 
-1. **Add Service Account Credentials to GitHub Secrets:**
+1. **GitHub Secrets にサービスアカウント認証情報を追加:**
    
-   a. Get your service account JSON from `service-account-key.json`
-   b. Go to repository Settings → Secrets and variables → Actions
-   c. Click "New repository secret"
-   d. Name: `GOOGLE_SERVICE_ACCOUNT_KEY_JSON`
-   e. Value: Paste the entire JSON content from your service account key file
-   f. Click "Add secret"
+   a. `service-account-key.json` から サービスアカウント JSON を取得
+   b. リポジトリの Settings → Secrets and variables → Actions へ移動
+   c. 「New repository secret」をクリック
+   d. 名前: `GOOGLE_SERVICE_ACCOUNT_KEY_JSON`
+   e. 値: サービスアカウントキーファイルの JSON 内容全体をペースト
+   f. 「Add secret」をクリック
 
-2. **Manual Trigger:**
+2. **手動実行:**
    
-   - Go to Actions tab → "Update Roster Data" workflow
-   - Click "Run workflow" → Select branch → Run
+   - Actions タブ → 「Update Roster Data」ワークフロー
+   - 「Run workflow」をクリック → ブランチを選択 → 実行
 
-3. **Monitor Execution:**
+3. **実行監視:**
    
-   - Check Actions tab for workflow status
-   - Failed runs automatically create GitHub Issues for notification
+   - Actions タブでワークフローのステータスを確認
+   - 失敗時は自動的に GitHub Issue が作成されて通知
 
-### Features
+### 機能
 
-- Automatic commit of updated `data/roster.json`
-- Skip commits when no data changes detected
-- Error notifications via GitHub Issues
-- Secure credential management via GitHub Secrets
+- `data/roster.json` の更新を自動コミット
+- データ変更がない場合はコミットをスキップ
+- GitHub Issues によるエラー通知
+- GitHub Secrets による安全な認証情報管理
 
-## Features
+## 機能
 
-- Fetches roster data from Google Sheets via Drive API
-- Converts CSV data to structured JSON format
-- Detects actual MIME types for images (e.g., image/jpeg, image/png, image/heif)
-- Converts Google Drive sharing URLs to direct access URLs
-- Caches metadata for improved performance
-- Sorts members by jersey number
+- Drive API 経由で Google スプレッドシートから名簿データを取得
+- CSV データを構造化された JSON 形式に変換
+- 画像の実際の MIME タイプを検出（例：image/jpeg、image/png、image/heif）
+- Google Drive 共有 URL を直接アクセス URL に変換
+- パフォーマンス向上のためメタデータをキャッシュ
+- ジャージ番号でメンバーをソート
 
-## Development
+## 開発
 
-- TypeScript with ES2019 target
-- Uses `tsx` for direct TypeScript execution
-- Google APIs SDK for Drive/Sheets access
+- TypeScript（ES2019 ターゲット）
+- 直接 TypeScript 実行に `tsx` を使用
+- Drive/Sheets アクセスに Google APIs SDK を使用
 
-## License
+## ライセンス
 
-[Add license information here]
+MIT
