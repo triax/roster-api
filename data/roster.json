@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated_at": "2025-08-12T18:23:02.768Z",
+  "updated_at": "2025-08-13T18:21:09.914Z",
   "members": [
     {
       "timestamp": "2025-08-01T09:38:53.000Z",
@@ -284,6 +284,41 @@
       "favorite": "スムージー作り",
       "gifts": "頑張って！の一言。",
       "what_i_like_about_triax": "フットボールに限らず色んな分野で成長できるところ"
+    },
+    {
+      "timestamp": "2025-08-13T14:28:39.000Z",
+      "name": {
+        "default": "丸岡壮輝",
+        "hiragana": "まるおか　そうき",
+        "alphabet": "MARUOKA SOKI"
+      },
+      "position": "WR",
+      "jersey": 11,
+      "next_introduction": "QBの中でも稀なムードメーカー兼インテリQB",
+      "role": "WRポジションリーダー、宴会幹事補佐",
+      "photos": {
+        "serious": {
+          "url": "https://drive.usercontent.google.com/download?id=1C6amDKgkbojlD2rmF5oUVjhDdSq05e3S&export=view",
+          "mime_type": "image/jpeg"
+        },
+        "casual": [
+          {
+            "url": "https://drive.usercontent.google.com/download?id=1-KYPeD3JaBoccDwEq6e2cMyvK7mV3nnF&export=view",
+            "mime_type": "image/jpeg"
+          },
+          {
+            "url": "https://drive.usercontent.google.com/download?id=10wz7LDdolQwpVSxXmWUXk9cIDOiRORlp&export=view",
+            "mime_type": "image/jpeg"
+          }
+        ]
+      },
+      "university": "山口大学",
+      "enthusiasm": "wideユニットで引っ張って5勝する",
+      "watchme": "フィニッシュ",
+      "hobbies": "行ったことないお店に行く、お皿を買う",
+      "favorite": "和泉:酔って弱音吐いてる和泉",
+      "gifts": "お菓子、プロテイン",
+      "what_i_like_about_triax": "ファミリーなところ"
     },
     {
       "timestamp": "2025-07-31T00:13:11.000Z",
